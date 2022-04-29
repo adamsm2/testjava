@@ -23,6 +23,7 @@ public class Game {
         int numberOfPlayers = initPlayersList();
 
         this.startTime = LocalDateTime.now();
+        
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < numberOfPlayers; j++) {
                 System.out.println("\n\tKOLEJKA GRACZA O NAZWIE: "+players.get(j).name);
@@ -37,9 +38,8 @@ public class Game {
                     System.out.println("\t\tSPARE!");
                 }
             }
-
-
         }
+        
         this.endTime = LocalDateTime.now();
 
         int winner = 0;
