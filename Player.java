@@ -2,7 +2,7 @@ package com.company;
 
 import java.util.Scanner;
 
-public class Player {
+public class Player implements Comparable<Player> {
     String name;
     int sumOfPoints;
     int [] pointsArray;
@@ -10,6 +10,15 @@ public class Player {
     public Player (String name) {
         this.name = name;
         this.pointsArray = new int[20];
+    }
+
+    public int getSumOfPoints() {
+        return sumOfPoints;
+    }
+
+    @Override
+    public int compareTo(Player p) {
+        return p.getSumOfPoints() - this.sumOfPoints;
     }
 
     public int makeAThrow (int numberOfRound, int numberOfThrow) {

@@ -4,6 +4,7 @@ package com.company;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class Game {
@@ -20,7 +21,8 @@ public class Game {
 
     public boolean play() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-        int numberOfPlayers = initPlayersList();
+        initPlayersList();
+        int numberOfPlayers = players.size();
 
         this.startTime = LocalDateTime.now();
         for (int i = 0; i < 10; i++) {
@@ -42,6 +44,7 @@ public class Game {
         }
         this.endTime = LocalDateTime.now();
 
+        /*
         int winner = 0;
         for (int i = 0; i < numberOfPlayers; i++) {
             System.out.println("\n\nLICZBA ŁĄCZNIE ZDOBYTYCH PUNKTÓW PRZEZ CAŁĄ GRĘ PRZEZ GRACZA " + players.get(i).name + ": " + players.get(i).sumOfPoints);
@@ -50,9 +53,11 @@ public class Game {
         }
 
         System.out.println("WYGRYWA: "+players.get(winner).name);
+        */
         System.out.println("\tROZPOCZĘCIE GRY: " + dtf.format(this.startTime));
         System.out.println("\tKONIEC GRY: " + dtf.format(this.endTime));
 
+        printGameScoreboard();
         return true;
     }
 
@@ -62,7 +67,7 @@ public class Game {
         this.currentThrowNumber = 0;
     }
 
-    private int initPlayersList() {
+    private void initPlayersList() {
         Scanner in = new Scanner(System.in);
         int numberOfPlayers = 0;
 
@@ -76,11 +81,39 @@ public class Game {
         }
 
         for (int i = 0; i < numberOfPlayers; i++) {
+            System.out.println("Podaj nazwę gracza " + (i + 1) + ":");
+            String playerName;
+            while (true) {
+                playerName = in.next();
+                boolean ifExists = false;  // czy gracz o wpisanej nazwie już istnieje
+                for (int j = 0; j < players.size(); j++) {
+                    if (playerName.equalsIgnoreCase(players.get(j).name)) {
+                        System.out.println("Gracz o takiej nazwie już istnieje - podaj inną nazwę: ");
+                        ifExists = true;
+                        break;
+                    }
+                }
+                if (ifExists == false)
+                    break;
+            }
+            players.add(new Player(playerName));
+        }
+
+        /*
+        for (int i = 0; i < numberOfPlayers; i++) {
             System.out.println("Podaj nazwę gracza " + (i+1) + ":");
             String playerName = in.next();
             players.add(new Player(playerName));
         }
+        */
+    }
 
-        return numberOfPlayers;
+
+    private void printGameScoreboard() {
+        int numberOfPlayers = players.size();
+        Collections.sort(players);
+        for (int i = 0; i < numberOfPlayers; i++) {
+            System.out.println("\n"+ (i+1) +". "+ players.get(i).name +" ZDOBYTE PUNKTY: "+ players.get(i).sumOfPoints);
+        }
     }
 }
